@@ -5,13 +5,13 @@
     <title>Results</title>
     <style>
         body {
-            font-family: Arial, sans-seriff;
+            font-family: Arial, sans-serif;
             background-color: #f0f4f8;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            marigin: 0;
+            margin: 0;
         }
 
         .results-container {
@@ -47,10 +47,9 @@
     </style>
 </head>
 <body>
-    <div class= "results-container"></div>
-    <h1>Your Suggested Major is...</h1>
-    <p class="major">{{major}}</p>
-    <div style="position: absolute; bottom: 40px; left: 0; width: 100%; text-align: center;">
+    <div class= "results-container">
+        <h1>Your Suggested Major is...</h1>
+        <p class="major">{{major}}</p>
         <a class="home-link" href="{{ url_for('home.landing') }}">Go back to home</a>
     </div>
 </body>

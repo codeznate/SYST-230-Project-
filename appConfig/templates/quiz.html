@@ -3,16 +3,89 @@
 <html>
 <head>
     <title>Quiz Page</title>
+    <style>
+        body 
+        {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .quiz-container 
+        {
+            background-color: #ffffff;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1
+        {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 3;
+        }
+        p.question
+        {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .radio-group
+        {
+            margin-bottom: 25px;
+        }
+        .radio-group
+        {
+            margin-bottom: 25px;
+        }
+        .radio-group label
+        {
+            display: block;
+            margin: 8px 0;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="radio"]
+        {
+            margin-right: 10px;
+        }
+        button
+        {
+            display: block;
+            width: 100%;
+            background-color: #2a9e8f;
+            color: white;
+            font-size: 18px; 
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover
+        {
+            background-color: #21867a;
+        }
+    </style>
 </head>
 <body>
-    <h1>Find your Major!</h1>
-    <form method="POST" action ="{{url_for('quiz.start_quiz')}}">
-        <p>1. I prefer to be a leader and not a follower.</p>
-        <input type = "radio" name = "q1" value="strongly">Strongly Agree<br>
-        <input type = "radio" name = "q1" value = "agree">Agree<br>
-        <input type = "radio" name = "q1" value = "disagree">Disagree<br>
-        <input type = "radio" name = "q1" value = "strongly_disagree">Strongly Disagree<br>
-        <button type = "submit">Suggest major!</button>
-    </form>
+    <div class="quiz-container">
+        <h1>Find your Major!</h1>
+        <form method="POST" action="{{ url_for('quiz.start_quiz') }}">
+            <p class="question">1. I prefer to be a leader and not a follower.</p>
+            <div class="radio-group">
+                <label><input type="radio" name="q1" value="strongly">Strongly Agree</label>
+                <label><input type="radio" name="q1" value="agree">Agree</label>
+                <label><input type="radio" name="q1" value="disagree">Disagree</label>
+                <label><input type="radio" name="q1" value="strongly_disagree">Strongly Disagree</label>
+            </div>
+            <button type="submit">Suggest major!</button>
+        </form>
+    </div>
 </body>
 </html>
