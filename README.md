@@ -1,6 +1,9 @@
 # SYST-230-Project-
 Development of a website to help undecided/decided college majors!
 Step usage so far:
+Must install flask 
+    "pip install flask"
+If given error message of directory not in path, copy the directory, add to system PATH, and then restart terminal and code IDE
 Open command terminal, navigate to appConfig directory
     "cd appConfig"
 Run command
