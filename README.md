@@ -11,5 +11,8 @@ If succeeded, should display
 Navigate to http://127.0.0.1:5000
 Website should work so far, quiz page being modified to add more questions and better results coming soon. 
 
+Notes**
+127.0.0.1 is a loopback address, your computer sends traffic through itself, so it never reaches an outside network. Any computer should be able to run this. 
+
 George Mason University 
 9/30/2025
