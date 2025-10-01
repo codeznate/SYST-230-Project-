@@ -8,7 +8,12 @@ quiz_bp = Blueprint("quiz", __name__, template_folder="templates")
 
 def start_quiz():
     if request.method == "POST":
-        answers = request.form
-        suggested_career = "Computer Science" if answers.get("q1") == "Technology" else "Art"
-        return render_template("results.html", career=suggested_career)
+        answer = request.form.get("q1")
+        if answer == "strongly" or answer == "agree":
+            suggested_career = "Engineering"
+        elif answer == "disagree":
+            suggested_career = "Arts"
+        else:
+            suggested_career = "Computer science"
+        return render_template("results.html", major=suggested_career)
     return render_template("quiz.html")
