@@ -4,4 +4,15 @@
 <head>
     <title>Quiz Page</title>
 </head>
+<body>
+    <h1>Find your Major!</h1>
+    <form method="POST" action ="{{url_for('quiz.quiz_result')}}">
+        <p>1. I prefer to be a leader and not a follower.</p>
+        <input type = "radio" name = "q1" value="strongly">Strongly Agree<br>
+        <input type = "radio" name = "q1" value = "agree">Agree<br>
+        <input type = "radio" name = "q1" value = "disagree">Disagree<br>
+        <input type = "radio" name = "q1" value = "strongly_disagree">Strongly Disagree<br>
+        <button type = "submit">Suggest major!</button>
+    </form>
+</body>
 </html>
