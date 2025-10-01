@@ -2,12 +2,12 @@
 
 from flask import Flask
 from Routes.home import home_bp
-from Routes.quiz import quiz_bp
+#from Routes.quiz import quiz_bp
 
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(home_bp)
-    app.register_blueprint(quiz_bp)
+    #app.register_blueprint(quiz_bp)
 
     return app
 
