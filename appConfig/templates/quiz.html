@@ -71,21 +71,133 @@
         {
             background-color: #21867a;
         }
+        
+        .hidden
+        {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h1>Find your Major!</h1>
         <form method="POST" action="{{ url_for('quiz.start_quiz') }}">
-            <p class="question">1. I prefer to be a leader and not a follower.</p>
-            <div class="radio-group">
-                <label><input type="radio" name="q1" value="strongly">Strongly Agree</label>
-                <label><input type="radio" name="q1" value="agree">Agree</label>
-                <label><input type="radio" name="q1" value="disagree">Disagree</label>
-                <label><input type="radio" name="q1" value="strongly_disagree">Strongly Disagree</label>
+
+            <!-- 1 -->
+             <div class="question-block">
+                <p class="question">1. I prefer to be a leader and not a follower.</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="q1" value="strongly">Strongly Agree</label>
+                    <label><input type="radio" name="q1" value="agree">Agree</label>
+                    <label><input type="radio" name="q1" value="disagree">Disagree</label>
+                    <label><input type="radio" name="q1" value="strongly_disagree">Strongly Disagree</label>
+                </div>
             </div>
-            <button type="submit">Suggest major!</button>
+
+            <!-- 2 -->
+             <div class="question-block hidden">
+                <p class="question">2. I want to work for myself and not others.</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="q2" value="strongly">Strongly Agree</label>
+                    <label><input type="radio" name="q2" value="agree">Agree</label>
+                    <label><input type="radio" name="q2" value="disagree">Disagree</label>
+                    <label><input type="radio" name="q2" value="strongly_disagree">Strongly Disagree</label>
+                </div>
+             </div>
+
+            <!-- 3 -->
+             <div class="question-block hidden">
+                <p class="question">3. I work best with a structured schedule.</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="q3" value="strongly">Strongly Agree</label>
+                    <label><input type="radio" name="q3" value="agree">Agree</label>
+                    <label><input type="radio" name="q3" value="disagree">Disagree</label>
+                    <label><input type="radio" name="q3" value="strongly_disagree">Strongly Disagree</label>
+                </div>
+             </div>
+
+            <!-- 4 -->
+             <div class="question-block hidden">
+                <p class="question">4. I enjoy working with people.</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="q4" value="strongly">Strongly Agree</label>
+                    <label><input type="radio" name="q4" value="agree">Agree</label>
+                    <label><input type="radio" name="q4" value="disagree">Disagree</label>
+                    <label><input type="radio" name="q4" value="strongly_disagree">Strongly Disagree</label>
+                </div>
+            </div>
+
+            <!-- 5 -->
+             <div class="question-block hidden">
+                <p class="question">5. I like it when my actions make a difference.</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="q5" value="strongly">Strongly Agree</label>
+                    <label><input type="radio" name="q5" value="agree">Agree</label>
+                    <label><input type="radio" name="q5" value="disagree">Disagree</label>
+                    <label><input type="radio" name="q5" value="strongly_disagree">Strongly Disagree</label>
+                </div>
+            </div>
+
+            <!-- 6 -->
+             <div class="question-block hidden">
+                <p class="question">6. I like traveling and experiencing new cultures.</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="q6" value="strongly">Strongly Agree</label>
+                    <label><input type="radio" name="q6" value="agree">Agree</label>
+                    <label><input type="radio" name="q6" value="disagree">Disagree</label>
+                    <label><input type="radio" name="q6" value="strongly_disagree">Strongly Disagree</label>
+                </div>
+            </div>
+
+            <!-- 7 -->
+             <div class="question-block hidden">
+                <p class="question">7. I can comprehend and synthesize large chunks of text very well.</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="q7" value="strongly">Strongly Agree</label>
+                    <label><input type="radio" name="q7" value="agree">Agree</label>
+                    <label><input type="radio" name="q7" value="disagree">Disagree</label>
+                    <label><input type="radio" name="q7" value="strongly_disagree">Strongly Disagree</label>
+                </div>
+            </div>
+
+            <!-- 8 -->
+             <div class="question-block hidden">
+                <p class="question">8. I am good at articulating myself both verbally and in writing.</p>
+                <div class="radio-group">
+                    <label><input type="radio" name="q8" value="strongly">Strongly Agree</label>
+                    <label><input type="radio" name="q8" value="agree">Agree</label>
+                    <label><input type="radio" name="q8" value="disagree">Disagree</label>
+                    <label><input type="radio" name="q8" value="strongly_disagree">Strongly Disagree</label>
+                </div>
+            </div>
+
+            <!-- 9 -->
+                <div class="question-block hidden">
+                    <p class="question">9. I prefer to be creative than to have constraints.</p>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q9" value="strongly">Strongly Agree</label>
+                        <label><input type="radio" name="q9" value="agree">Agree</label>
+                        <label><input type="radio" name="q9" value="disagree">Disagree</label>
+                        <label><input type="radio" name="q9" value="strongly_disagree">Strongly Disagree</label>
+                    </div>
+                </div>
+            
+            <!-- 10 -->
+                <div class="question-block hidden">
+                    <p class="question">10. I like to be active and moving around.</p>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q10" value="strongly">Strongly Agree</label>
+                        <label><input type="radio" name="q10" value="agree">Agree</label>
+                        <label><input type="radio" name="q10" value="disagree">Disagree</label>
+                        <label><input type="radio" name="q10" value="strongly_disagree">Strongly Disagree</label>
+                    </div>
+                </div>
+
+            <button type="button" id="nextButton">Next Question</button>
+            <button type="submit" id="submitButton" class="hidden">Submit Quiz!</button>
         </form>
     </div>
+
 </body>
+<script src="{{ url_for('static', filename='quiz.js') }}"></script>
 </html>
