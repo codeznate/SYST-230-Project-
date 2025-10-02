@@ -1,8 +1,70 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>Decided Major</title>
-        <p>Nothing here yet....</p>
+        <style>
+            body
+            {
+                font-family: Arial, sans-serif;
+                background-color: #f0f4f8;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            .majorSelect-container
+            {
+                float: right;
+                text-align: center;
+                background-color: #ffffff;
+                padding: 50px 40px;
+                border-radius: 15px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1)
+            }
+
+            label
+            {
+                color: #333333;
+                margin-bottom: 10px;
+            }
+
+            select
+            {
+                text-decoration: none;
+                background-color: #2a9e8f;
+                color: #ffffff;
+                padding: 10px 5px;
+                margin: 10px;
+                border-radius: 10px;
+                font-weight: bold;
+                display: inline-block;
+                transition: background-color 0.3s;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            
+
+
+
+            
+        </style>
     </head>
+    <body>
+        <div class="majorSelect-container">
+            <label for="majors">Select the major you're interested/taking!</label>
+            <select name="majors" id="majors">
+                <option value="business">Business</option>
+                <option value="computer_science">Computer Science</option>
+                <option value="economics">Economics</option>
+                <option value="education">Education</option>
+                <option value="engineering">Engineering</option>
+                <option value="entreprenuership">Entreprenuership</option>
+                <option value="music_arts">Music Arts</option>
+                <option value="performing_arts">Performing Arts</option>
+                <option value="visual_arts">Visual Arts</option>
+                <option value="health_sciences">Health Sciences</option>
+            </select>
+        </div>
+    </body>
 </html>
