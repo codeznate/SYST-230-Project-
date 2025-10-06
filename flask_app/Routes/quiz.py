@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template, request
 
-quiz_bp = Blueprint("quiz", __name__, template_folder="templates")
+quiz_bp = Blueprint("quiz", __name__, template_folder="../templates")
 
 @quiz_bp.route("/", methods = ["GET", "POST"])
 
