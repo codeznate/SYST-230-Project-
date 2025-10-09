@@ -4,8 +4,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 
 #dictionary for major descriptions
-major_descriptions = {
-    "Business": "Business majors learn about management, finance, and entrepreneurship...",
+major_descriptions = {    "Business": "Business majors learn about management, finance, and entrepreneurship...",
     "Engineering": "Engineering majors learn how to design and build technology...",
     "Computer Science": "Computer Science focuses on programming, algorithms, and software design...",
     "Performing Arts": "Performing Arts covers theater, dance, and performance skills...",
@@ -43,6 +42,7 @@ class majorApp(tk.Tk):
         file_menu = tk.Menu(menu_bar, tearoff = 0)
         file_menu.add_command(label = "Home", command = lambda: self.show_frame(homePage))
         file_menu.add_command(label = "Quiz", command= lambda: self.show_frame(quizPage))
+        file_menu.add_command(label = "Decided", command = lambda: self.show_frame(decidedPage))
         file_menu.add_separator()
         file_menu.add_command(label = "Exit", command = self.destroy)
         menu_bar.add_cascade(label = "Navigation", menu = file_menu)
