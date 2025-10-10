@@ -15,6 +15,10 @@ from descriptions import major_descriptions
 """
 MajorPick GUI Interface project!
 
+Helps students who are undecided and looking to pursue secondary education on what major is best fit for them. Provides detailed results based off a quiz with
+selected questions to provide the student with a recommended major. Detailed information and examples of jobs for each major will be provided, as well as
+information about the major from GMU such as cost of tuition range, credits expected, different classes and content expected.
+
 """
 
 
@@ -61,8 +65,8 @@ class majorApp(tk.Tk):
 class homePage(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        label = ttk.Label(self, text="Welcome student! Are you currently decided or undecided?", font=("Helvetica", 16))
-        label.pack(pady=40)
+        home_label = ttk.Label(self, text="Welcome student! Are you currently decided or undecided?", font=("Consolas", 16))
+        home_label.pack(pady=40)
 
         # buttons
         decided_btn = ttk.Button(self, text="Decided", command=lambda: controller.show_frame(decidedPage))
@@ -70,12 +74,13 @@ class homePage(ttk.Frame):
         undecided_btn = ttk.Button(self, text="Undecided", command=lambda: controller.show_frame(quizPage))
         undecided_btn.pack(pady=10)
 
-class decidedPage(ttk.Frame):  # page for drop down selection
+class decidedPage(ttk.Frame): # page for drop down selection
+
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        label = ttk.Label(self, text="Select your major from the dropdown!", font=("Consolas", 14))
-        label.pack(pady=25)
+        decided_label = ttk.Label(self, text="Select your major from the dropdown!", font=("Consolas", 14))
+        decided_label.pack(pady=25)
 
         # major dropbox
         majors = [
@@ -100,6 +105,7 @@ class decidedPage(ttk.Frame):  # page for drop down selection
         else:
             info_page = self.controller.frames[majorInfoPage]
             info_page.show_major_info(self.selectedMajor.get())
+
 class quizPage(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -134,7 +140,7 @@ class quizPage(ttk.Frame):
             self.radio_buttons.append(rb)
 
         # progressing questions
-        self.next_btn = tk.Button(self, text="Next question", command=self.next_question)
+        self.next_btn = tk.Button(self, text="Next question", font = ("Consolas"), command=self.next_question)
         self.next_btn.pack(pady=20)
         self.back_btn = tk.Button(self, text="Home", command=lambda: controller.show_frame(homePage))
         self.back_btn.pack(pady=20)
@@ -149,9 +155,9 @@ class quizPage(ttk.Frame):
         self.answer_var.set("")
 
         if self.current_question == len(self.questions) -1:
-            self.next_btn.config(text = "Submit!")
+            self.next_btn.config(text = "Submit!", font = ("Consolas"))
         else:
-            self.next_btn.config(text = "Next Question")
+            self.next_btn.config(text = "Next Question", font = ("Consolas"))
 
     def next_question(self):
         answer = self.answer_var.get().strip()
@@ -170,10 +176,22 @@ class quizPage(ttk.Frame):
             self.load_question()
     
     def reset_quiz(self): #reset the quiz
+        """Resets quiz state so the student can retake it.
+
+        :returns: None
+        :tests:
+        >>> app = majorApp()
+        >>> quiz_page = app.frames[quizPage]
+        >>> quiz_page.answers = ["Agree"]
+        >>> quiz_page.current_question = 5
+        >>> quiz_page.reset_quiz()
+        >>> (quiz_page.answers == [], quiz_page.current_question == 0)
+        (True, True)
+        """
+
         self.answers.clear()
         self.current_question = 0
         self.answer_var.set("")
-
         self.load_question()
 
 class resultPage(ttk.Frame):  # quiz result page
@@ -196,6 +214,21 @@ class resultPage(ttk.Frame):  # quiz result page
             "Visual Arts", "Health Science", "Biology", "Psychology",
             "Music", "Economics"
         ]
+        """Sets and displays the recommended major based on quiz answers.
+
+        :param answers: List of answer strings ("Strongly agree", "Agree", etc.)
+        :type answers: list[str]
+
+        :returns: None, updates label text in the result page
+
+        :tests:
+        >>> app = majorApp()
+        >>> result_page = app.frames[resultPage]
+        >>> answers = ["Strongly agree"] * 10
+        >>> result_page.set_result(answers)
+        >>> "Recommended Major:" in result_page.result_label.cget("text")
+        True
+        """
 
         scores = {m: 0 for m in majors}
 
@@ -253,23 +286,46 @@ class majorInfoPage(ttk.Frame):
         self.home_btn.pack(pady = 10)
 
     def show_major_info(self, major_name): #showing description of major 
+        """Displays information about the selected major.
+
+        :param major_name: Name of the major
+        :type major_name: str
+
+        :returns: None, updates label text with the description.
+
+        :tests:
+        >>> app = majorApp()
+        >>> info_page = app.frames[majorInfoPage]
+        >>> info_page.show_major_info("Business")
+        >>> "Business" in info_page.label.cget("text")
+        True
+        """
+        
         description = major_descriptions.get(major_name, "No description available.")
-        self.label.configure(text = f"{major_name}\n\n{description}")
+        self.label.configure(text = f"{major_name}\n\n{description}", font = ("Consolas", 14))
         self.tkraise()
 
 class aboutPage(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        label = ttk.Label(self, text = "Major pick, your career deciding assistant!", font = ("Helvetica", 16, "bold"))
-        label.pack(pady = 40)
-        label = ttk.Label(self, text = """This is major pick, an application that helps students decide their major, provide descriptions 
+        about_title_label = ttk.Label(self, text = "Major pick, your career deciding assistant!", font = ("Consolas", 16, "bold"))
+        about_title_label.pack(pady = 40)
+        about_desc_label = ttk.Label(self, text = """This is major pick, an application that helps students decide their major, provide descriptions 
 and job examples of the major, and provides general information like tuition cost and other important information
-at George Mason University.""", font = ("Helvetica", 14), wraplength = 500)
-        label.pack(pady = 60)
+at George Mason University.""", font = ("Consolas", 14), wraplength = 500)
+        about_desc_label.pack(pady = 60)
 
         home_btn = ttk.Button(self, text = "Home", command = lambda: controller.show_frame(homePage))
         home_btn.pack(pady = 80)
 
 if __name__ == "__main__":  # mainloop
+    
+    """
+    **TEST DECLARATIONS*
+    Remove '#' to run doctest from tests in a few functions. 
+    """
+    #import doctest
+    #doctest.testmod(verbose = True)
+
     app = majorApp()
     app.mainloop()
