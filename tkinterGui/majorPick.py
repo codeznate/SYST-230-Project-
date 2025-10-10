@@ -1,20 +1,23 @@
 
-
+"""
+EXTERNAL/INTERNAL LIBRARIES
+    ***
+    tkinter = Interal python module for GUI interface, development, configuration, and design
+    ttk = Internal python function from tkinter, upgraded tk widgets
+    messagebox = Internal python function from tkinter, function for displaying message boxs with messages upon
+    certain conditions. 
+    descriptions = External python file for major descriptions for organization and cleanliness. 
+"""
 import tkinter as tk
 from tkinter import ttk, messagebox
+from descriptions import major_descriptions
 
-#dictionary for major descriptions
-major_descriptions = {    "Business": "Business majors learn about management, finance, and entrepreneurship...",
-    "Engineering": "Engineering majors learn how to design and build technology...",
-    "Computer Science": "Computer Science focuses on programming, algorithms, and software design...",
-    "Performing Arts": "Performing Arts covers theater, dance, and performance skills...",
-    "Visual Arts": "Visual Arts teaches painting, drawing, sculpture, and creative expression...",
-    "Health Science": "Health Science covers medicine, nursing, public health, and wellness...",
-    "Biology": "Biology explores living organisms, ecosystems, and genetics...",
-    "Psychology": "Psychology studies human behavior, cognition, and mental health...",
-    "Music": "Music majors focus on performance, composition, and music theory...",
-    "Economics": "Economics studies markets, finance, and economic policy..."
-}
+"""
+MajorPick GUI Interface project!
+
+"""
+
+
 
 class majorApp(tk.Tk):
     def __init__(self):
