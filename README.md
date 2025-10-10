@@ -1,57 +1,37 @@
-# SYST-230 Project
+#  Major Pick — College Major Decision Assistant
 
-A web application to assist college students in exploring and selecting majors, including resources for both undecided and decided students.
-
-## Features
-
-- Browse majors and view example career paths
-- Select your major and see related job opportunities
-- In-progress: Improved formatting and integration with a C-based web server
-
-## Prerequisites
-
-- Python 3.x
-- Flask web framework
-
-## Installation
-
-1. Install Flask:
-    ```bash
-    pip install flask
-    ```
-2. If you encounter a "directory not in PATH" error, copy the directory, add it to your system PATH, then restart your terminal and code editor.
-
-## Usage
-
-1. Open a command terminal.
-2. Navigate to the `flask_app` directory:
-    ```bash
-    cd flask_app
-    ```
-3. Start the app python code, also boots C server:
-    ```bash
-    python3 app.py
-    ```
-4. If successful, you should see:
-    ```
-    *Running on http://127.0.0.1:5000
-    C server launching...
-    C server successfully booted. 
-        *Debugger is active!
-    ```
-5. Open your browser and go to [127.0.0.1:2728]
-    ```
-    2728 is the port that the C server runs on and handles the static pages, right now it runs the home page.
-    5000 is the port that flask uses, which runs dynamic pages such as the quiz and decided page. 
-
-## Notes
-
-- `127.0.0.1` is a loopback address; the server runs locally on your computer.
-- Any computer with Python and Flask installed can run this application.
+**Major Pick** is a Python-based desktop application built with `tkinter` that helps students explore and decide on a suitable college major.  
+Through a short quiz, users receive a recommended major based on their preferences and personality traits. The app also provides information about each major, including descriptions and related career paths.
 
 ---
 
-George Mason University  
-Updated: 9/30/2025
-Author(s): 
-    *Nathaniel Crick
+##  Features
+
+-  **Navigation Menu** — Easily move between Home, Quiz, About, and Major Info pages.  
+-  **Quiz System** — Answer 10 personality-based questions to receive a recommended major.  
+-  **Major Information** — View detailed descriptions and example career paths for each major.  
+-  **Retake or Reset Quiz** — Restart the quiz or return home anytime.  
+-  **User-Friendly Interface** — Simple, clean design using `tkinter` and `ttk`.
+
+---
+
+##  Pages Overview
+
+| Page | Description |
+|------|--------------|
+| **Home** | Start page where users choose if they’re decided or undecided about a major. |
+| **Decided Page** | Dropdown for students who already know their major to view information. |
+| **Quiz Page** | 10-question quiz to recommend a major based on user answers. |
+| **Result Page** | Displays your recommended major and score breakdown. |
+| **Major Info Page** | Shows detailed descriptions of majors (Business, CS, Engineering, etc.). |
+| **About Page** | Information about the app’s purpose and development. |
+
+---
+
+##  Technologies Used
+
+- **Python 3.x**
+- **Tkinter / ttk** for the GUI
+- **Messagebox** for prompts and alerts
+
+
