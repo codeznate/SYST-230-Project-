@@ -1,3 +1,19 @@
+"""
+Visual weekly schedule grid widget for class scheduling.
+
+Classes and functions:
+    C -> ScheduleGrid: QWidget subclass displaying a weekly grid and allowing class blocks to be added/removed.
+        F - > add_class_block(name, days, start_min, end_min, color): Add a class block to the grid.
+        F -> check_conflict(days, start_min, end_min): Check if a class conflicts with existing classes.
+        F -> get_class_names(): Get a list of class names currently in the grid.
+        F -> remove_class(class_name): Remove a class block by name.
+    F -> minutes_to_slot_index(minutes): Convert minutes-from-midnight to grid row index.
+    
+"""
+
+
+
+
 from PySide6.QtWidgets import QWidget, QLabel, QGridLayout, QSizePolicy
 from PySide6.QtCore import Qt
 
@@ -19,13 +35,13 @@ class ScheduleGrid(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.cols = 5  # Mon-Fri
+        self.cols = 5
         total_minutes = (END_HOUR - START_HOUR) * 60
         self.rows = total_minutes // SLOT_MINUTES
         self.grid = QGridLayout()
         self.grid.setSpacing(1)
         self.setLayout(self.grid)
-        self.cell_occupancy = {}  # (col, row) -> widget
+        self.cell_occupancy = {}
 
         # Build header labels
         days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
@@ -38,7 +54,7 @@ class ScheduleGrid(QWidget):
         # Time labels on left column
         for r in range(self.rows):
             minutes = START_HOUR * 60 + r * SLOT_MINUTES
-            if minutes % 60 == 0:  # label every hour
+            if minutes % 60 == 0:
                 hh = minutes // 60
                 time_label = QLabel(f"{hh:02d}:00")
                 time_label.setFixedWidth(50)
@@ -57,7 +73,7 @@ class ScheduleGrid(QWidget):
                 placeholder.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
                 self.grid.addWidget(placeholder, r + 1, c + 1)
 
-    def add_class_block(self, name, days, start_min, end_min, color="#B3E5FC"):
+    def add_class_block(self, name, days, start_min, end_min, color="#000000"):
         """Add a class to the grid. Returns (True,None) or (False,conflicts)."""
         start_idx = minutes_to_slot_index(start_min)
         end_idx = minutes_to_slot_index(end_min)
@@ -80,7 +96,7 @@ class ScheduleGrid(QWidget):
         for d in days:
             block = QLabel(name)
             block.setWordWrap(True)
-            block.setStyleSheet(f"background:{color}; border:1px solid #0288D1; padding:4px; border-radius:4px;")
+            block.setStyleSheet(f"background:{color}; color:black; border:1px solid #0288D1; padding:4px; border-radius:4px;")
             block.setAlignment(Qt.AlignCenter)
             self.grid.addWidget(block, start_idx + 1, d + 1, span, 1)
             for r in range(start_idx, start_idx + span):
@@ -107,7 +123,6 @@ class ScheduleGrid(QWidget):
     def remove_class(self, class_name):
         to_remove = set()
 
-        # Find all cells occupied by this class
         for (col, row), widget in list(self.cell_occupancy.items()):
             if widget.text() == class_name:
                 to_remove.add(widget)
@@ -116,11 +131,9 @@ class ScheduleGrid(QWidget):
             return False
 
         for widget in to_remove:
-            # Remove the widget from the layout
             self.grid.removeWidget(widget)
             widget.setParent(None)
             widget.deleteLater()
-        # Remove all entries from cell_occupancy that pointed to this widget
         self.cell_occupancy = {
             key: w for key, w in self.cell_occupancy.items() if w.text() != class_name
         }

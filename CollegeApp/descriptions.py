@@ -1,5 +1,11 @@
+"""
+This file contains detailed descriptions of career choices as well as examples. Multiple descriptions and examples are included
+to provide variety and depth to the display of information. 
+
+major_descriptions = [] -> Dictionary with all majors as keys and their descriptions and examples as values.
+"""
+
 major_descriptions = {
-    # Existing majors
     "Business": {
         "descriptions": [
             "Learn how organizations operate, including management, finance, and marketing.",
@@ -121,7 +127,6 @@ major_descriptions = {
         ]
     },
 
-    # New / Expanded Majors
     "Electrical Engineering": {
         "descriptions": [
             "Design and analyze electrical systems, from small electronics to large power grids.",

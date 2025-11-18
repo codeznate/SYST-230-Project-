@@ -1,6 +1,15 @@
+"""
+Utility functions for parsing and converting schedule data.
+
+Functions:
+    time_str_to_minutes: Convert "HH:MM" to minutes since midnight.
+    minutes_to_slot_index: Convert minutes since midnight to grid row index.
+    parse_schedule_input: Parse input like "M W F 10:30-11:20" into days list and start/end times in minutes.
+"""
+
+
 import re
 
-# Mapping day abbreviations to column indices
 DAY_MAP = {
     'M': 0, 'MON': 0,
     'T': 1, 'TU': 1, 'TUE': 1,
@@ -9,8 +18,8 @@ DAY_MAP = {
     'F': 4, 'FRI': 4
 }
 
-START_HOUR = 8   # First hour in schedule grid
-SLOT_MINUTES = 30  # Each row in grid represents 30 min
+START_HOUR = 8
+SLOT_MINUTES = 30  
 
 
 def time_str_to_minutes(s):
@@ -59,7 +68,6 @@ def parse_schedule_input(text):
 
     days = []
     for d in day_tokens:
-        # Handle multi-letter day tokens (MWF)
         if len(d) > 1 and re.match(r"^[MTWRF]{2,}$", d):
             for ch in d:
                 if ch in DAY_MAP:
@@ -73,5 +81,4 @@ def parse_schedule_input(text):
                 days.append(DAY_MAP[d[:3]])
             else:
                 raise ValueError(f"Unknown day token: {d}")
-
     return sorted(set(days))

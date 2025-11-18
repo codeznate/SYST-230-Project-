@@ -12,7 +12,6 @@ class QuizDialog(QDialog):
 
         self.layout = QVBoxLayout(self)
 
-        # Questions and answers tracking
         self.questions = [
             "I prefer to be a leader and not a follower.",
             "I prefer to work for myself and not others.",

@@ -142,7 +142,7 @@ class MajorApp(QWidget):
         days_row = QHBoxLayout()
         days_row.addWidget(QLabel("Days:"))
         self.day_checks = {}
-        for d in ["Mon", "Tue", "Wed", "Thu", "Fri"]:
+        for d in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]:
             cb = QCheckBox(d)
             self.day_checks[d] = cb
             days_row.addWidget(cb)
