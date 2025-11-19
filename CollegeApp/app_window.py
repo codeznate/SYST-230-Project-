@@ -6,6 +6,7 @@ from distro import info
 import schedule_grid
 from quiz_dialog import QuizDialog
 from descriptions import major_descriptions
+from clubs import major_clubs
 from PySide6.QtCore import Qt, QTimer
 from datetime import datetime
 import random
@@ -104,6 +105,10 @@ class MajorApp(QWidget):
         btn.clicked.connect(self.show_major_info_from_dropdown)
         layout.addWidget(btn)
 
+        self.show_clubs_btn = QPushButton("Show Clubs")
+        self.show_clubs_btn.clicked.connect(self.show_clubs_for_major)
+        layout.addWidget(self.show_clubs_btn)
+
         self.major_info_label = QLabel("Major info will appear here.")
         self.major_info_label.setWordWrap(True)
         self.major_info_label.setStyleSheet("font-size:16px;")
@@ -121,6 +126,36 @@ class MajorApp(QWidget):
             self.major_info_label.setText(f"{major}\n\n{desc}\n\n{example}")
         else:
             self.major_info_label.setText(f"{major}\n\nNo description available.")
+
+    def show_clubs_for_major(self):
+        major = self.major_dropdown.currentText()
+        clubs = major_clubs.get(major, [])
+
+        if not clubs:
+            # fallback if no clubs found
+            msg = "No clubs found for this major."
+        else:
+            msg = ""
+            for club in clubs:
+                msg += f"{club['name']}\n{club['description']}\n\n"
+
+        # Display in a simple dialog
+        dialog = QDialog(self)
+        dialog.setWindowTitle(f"{major} Clubs")
+        dialog.setMinimumSize(400, 300)
+
+        dlg_layout = QVBoxLayout(dialog)
+
+        text_edit = QTextEdit()
+        text_edit.setReadOnly(True)
+        text_edit.setText(msg)
+        dlg_layout.addWidget(text_edit)
+
+        back_btn = QPushButton("Back")
+        back_btn.clicked.connect(dialog.accept)
+        dlg_layout.addWidget(back_btn)
+
+        dialog.exec()
 
     # ------------------ SCHEDULE ------------------
     def build_schedule_section(self):

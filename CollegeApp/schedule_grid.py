@@ -18,7 +18,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QGridLayout, QSizePolicy
 from PySide6.QtCore import Qt
 
 START_HOUR = 8
-END_HOUR = 25
+END_HOUR = 23
 SLOT_MINUTES = 30
 
 def minutes_to_slot_index(minutes):
@@ -54,9 +54,21 @@ class ScheduleGrid(QWidget):
         # Time labels on left column
         for r in range(self.rows):
             minutes = START_HOUR * 60 + r * SLOT_MINUTES
-            if minutes % 60 == 0:
-                hh = minutes // 60
-                time_label = QLabel(f"{hh:02d}:00")
+            if minutes % 60 == 0:  # label every hour
+                hh_24 = minutes // 60
+                if hh_24 == 0:
+                    hh = 12
+                    ampm = "AM"
+                elif 1 <= hh_24 < 12:
+                    hh = hh_24
+                    ampm = "AM"
+                elif hh_24 == 12:
+                    hh = 12
+                    ampm = "PM"
+                else:  # 13–24
+                    hh = hh_24 - 12
+                    ampm = "PM"
+                time_label = QLabel(f"{hh}:00 {ampm}")
                 time_label.setFixedWidth(50)
                 time_label.setAlignment(Qt.AlignTop | Qt.AlignRight)
                 self.grid.addWidget(time_label, r + 1, 0)
