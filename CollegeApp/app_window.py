@@ -2,7 +2,6 @@ from PySide6.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QPushButton, QComboBox,
     QGroupBox, QScrollArea, QHBoxLayout, QLineEdit, QCheckBox, QDialog, QTextEdit
 )
-from distro import info
 import schedule_grid
 from quiz_dialog import QuizDialog
 from descriptions import major_descriptions
