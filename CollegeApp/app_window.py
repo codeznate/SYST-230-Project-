@@ -1,3 +1,9 @@
+"""
+-> This puts everything together, focusing on the widgets and the construction
+-> of the application. This serves as the frontend mainly, what the users see
+-> and implementing the backend code into buttons and scheduling features.
+"""
+
 from PySide6.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QPushButton, QComboBox,
     QGroupBox, QScrollArea, QHBoxLayout, QLineEdit, QCheckBox, QDialog, QTextEdit

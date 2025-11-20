@@ -1,3 +1,7 @@
+"""
+-> Quiz dialog popup, generating quizzes and fetching results.
+"""
+
 from PySide6.QtWidgets import (
     QDialog, QLabel, QVBoxLayout, QRadioButton, QButtonGroup,
     QPushButton, QMessageBox
@@ -27,13 +31,13 @@ class QuizDialog(QDialog):
         self.current_question = 0
         self.answers = []
 
-        # Quiz label
+        #quiz label
         self.quiz_label = QLabel("")
         self.quiz_label.setWordWrap(True)
         self.quiz_label.setStyleSheet("font-weight:bold; font-size:14px;")
         self.layout.addWidget(self.quiz_label)
 
-        # Answer buttons
+        #answer buttons
         self.answer_group = QButtonGroup(self)
         self.answer_radios = []
         for text in ["Strongly agree", "Agree", "Disagree", "Strongly disagree"]:
@@ -42,7 +46,7 @@ class QuizDialog(QDialog):
             self.layout.addWidget(rb)
             self.answer_radios.append(rb)
 
-        # Next button
+        #next button
         self.next_btn = QPushButton("Next Question")
         self.next_btn.clicked.connect(self.next_question)
         self.layout.addWidget(self.next_btn)
@@ -55,7 +59,7 @@ class QuizDialog(QDialog):
             return
         q = self.questions[self.current_question]
         self.quiz_label.setText(f"Question {self.current_question + 1} of {len(self.questions)}:\n{q}")
-        # Clear previous selections
+        #clear previous selections
         for rb in self.answer_radios:
             rb.setAutoExclusive(False)
             rb.setChecked(False)
@@ -114,6 +118,5 @@ class QuizDialog(QDialog):
         for m, s in scores.items():
             result_text += f"{m}: {s}\n"
 
-        # Show result in a message box
         QMessageBox.information(self, "Quiz Result", result_text)
         self.accept()

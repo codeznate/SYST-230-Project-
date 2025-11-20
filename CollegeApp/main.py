@@ -1,3 +1,7 @@
+"""
+-> Main program to run everything together.
+"""
+
 from PySide6.QtWidgets import QApplication
 from app_window import MajorApp
 import sys
