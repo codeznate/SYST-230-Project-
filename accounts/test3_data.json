@@ -1,0 +1,18 @@
+{
+  "username": "test3",
+  "schedule": [
+    {
+      "name": "CS 222",
+      "days": [
+        1,
+        3
+      ],
+      "start_min": 900,
+      "end_min": 990,
+      "color": "#E0A1B0"
+    }
+  ],
+  "quiz_results": null,
+  "selected_major": "Biomedical Engineering",
+  "preferences": {}
+}

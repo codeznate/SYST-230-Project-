@@ -6,12 +6,14 @@
 
 from PySide6.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QPushButton, QComboBox,
-    QGroupBox, QScrollArea, QHBoxLayout, QLineEdit, QCheckBox, QDialog, QTextEdit
+    QGroupBox, QScrollArea, QHBoxLayout, QLineEdit, QCheckBox, QDialog, QTextEdit, QMessageBox
 )
 import schedule_grid
 from quiz_dialog import QuizDialog
 from descriptions import major_descriptions
 from clubs import major_clubs
+from account_manage import AccountManager
+from account_dialog import AccountDialog
 from PySide6.QtCore import Qt, QTimer
 from datetime import datetime
 import random
@@ -71,6 +73,10 @@ class MajorApp(QWidget):
         super().__init__()
         self.setWindowTitle("Major Pick - Scheduling Enabled")
         self.setGeometry(120, 80, 1000, 900)
+        
+        # Initialize account manager
+        self.account_manager = AccountManager()
+        self.quiz_result = None
 
         self.layout = QHBoxLayout(self)
 
@@ -80,6 +86,7 @@ class MajorApp(QWidget):
         container = QWidget()
         self.right_layout = QVBoxLayout(container)
 
+        self.build_account_section()
         self.build_major_info_section()
         self.build_schedule_section()
 
@@ -96,6 +103,194 @@ class MajorApp(QWidget):
         timer = QTimer(self)
         timer.timeout.connect(self.update_next_class_info)
         timer.start(60000)
+        
+        self.update_account_display()
+
+    # ------------------ ACCOUNT SECTION ------------------
+    def build_account_section(self):
+        box = QGroupBox("Account")
+        layout = QVBoxLayout()
+        
+        self.account_status_label = QLabel("Not logged in")
+        self.account_status_label.setStyleSheet("font-weight: bold; font-size: 14px;")
+        layout.addWidget(self.account_status_label)
+        
+        btn_layout = QHBoxLayout()
+        
+        self.login_btn = QPushButton("Login")
+        self.login_btn.clicked.connect(self.open_account_dialog)
+        btn_layout.addWidget(self.login_btn)
+        
+        self.logout_btn = QPushButton("Logout")
+        self.logout_btn.clicked.connect(self.handle_logout)
+        self.logout_btn.setVisible(False)
+        btn_layout.addWidget(self.logout_btn)
+        
+        layout.addLayout(btn_layout)
+        
+        btn_layout2 = QHBoxLayout()
+        
+        self.save_btn = QPushButton("Save")
+        self.save_btn.clicked.connect(self.handle_save)
+        btn_layout2.addWidget(self.save_btn)
+        
+        self.load_btn = QPushButton("Load")
+        self.load_btn.clicked.connect(self.handle_load)
+        self.load_btn.setVisible(False)
+        btn_layout2.addWidget(self.load_btn)
+        
+        layout.addLayout(btn_layout2)
+        
+        box.setLayout(layout)
+        self.right_layout.addWidget(box)
+    
+    def open_account_dialog(self, auto_load=True):
+        dialog = AccountDialog(self.account_manager, self)
+        if dialog.exec():
+            self.update_account_display()
+            # Only load user data if auto_load is True and user has existing data
+            if auto_load:
+                user_data = self.account_manager.get_current_user_data()
+                # Only load if there's actually saved schedule data
+                if user_data.get("schedule"):
+                    self.load_user_data()
+                else:
+                    # New account with no data - just update UI elements
+                    self.update_remove_dropdown()
+                    self.update_next_class_info()
+    
+    def handle_logout(self):
+        reply = QMessageBox.question(
+            self, "Logout", 
+            "Are you sure you want to logout? Unsaved changes will be lost.",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        
+        if reply == QMessageBox.Yes:
+            self.account_manager.logout()
+            self.clear_schedule()
+            self.update_account_display()
+            QMessageBox.information(self, "Logged Out", "You have been logged out successfully.")
+    
+    def handle_save(self):
+        # Gather schedule data first (before any account operations)
+        schedule_data = []
+        classes_added = set()
+        
+        for (col, row), widget in self.schedule_grid.cell_occupancy.items():
+            class_name = widget.text()
+            if class_name not in classes_added:
+                # Find all cells for this class to determine days and times
+                class_cells = [(c, r) for (c, r), w in self.schedule_grid.cell_occupancy.items() if w.text() == class_name]
+                
+                days = sorted(set(c for c, r in class_cells))
+                rows = [r for c, r in class_cells if c == days[0]]
+                start_row = min(rows)
+                end_row = max(rows) + 1
+                
+                start_min = start_row * 30 + 8 * 60
+                end_min = end_row * 30 + 8 * 60
+                
+                schedule_data.append({
+                    "name": class_name,
+                    "days": days,
+                    "start_min": start_min,
+                    "end_min": end_min,
+                    "color": widget.styleSheet().split("background:")[1].split(";")[0]
+                })
+                classes_added.add(class_name)
+        
+        if not self.account_manager.is_logged_in():
+            # Prompt to create account or login
+            reply = QMessageBox.question(
+                self, "Account Required",
+                "You need an account to save your data. Would you like to create an account or login?",
+                QMessageBox.Yes | QMessageBox.No
+            )
+            
+            if reply == QMessageBox.Yes:
+                self.open_account_dialog()
+                # If still not logged in, don't save
+                if not self.account_manager.is_logged_in():
+                    return
+            else:
+                return
+        
+        # Save data (schedule_data was already gathered before account dialog)
+        success, message = self.account_manager.save_current_user_data(
+            schedule_data, 
+            self.quiz_result,
+            self.major_dropdown.currentText()
+        )
+        
+        if success:
+            QMessageBox.information(self, "Success", message)
+        else:
+            QMessageBox.warning(self, "Error", message)
+    
+    def handle_load(self):
+        if not self.account_manager.is_logged_in():
+            QMessageBox.warning(self, "Not Logged In", "Please login first.")
+            return
+        
+        self.load_user_data()
+    
+    def load_user_data(self):
+        """Load user data from account manager."""
+        user_data = self.account_manager.get_current_user_data()
+        
+        # Clear current schedule
+        self.clear_schedule()
+        
+        # Load schedule
+        for class_data in user_data.get("schedule", []):
+            self.schedule_grid.add_class_block(
+                class_data["name"],
+                class_data["days"],
+                class_data["start_min"],
+                class_data["end_min"],
+                class_data.get("color", "#CCCCCC")
+            )
+        
+        # Load quiz result
+        if user_data.get("quiz_results"):
+            self.quiz_result = user_data["quiz_results"]
+        
+        # Load selected major
+        if user_data.get("selected_major"):
+            index = self.major_dropdown.findText(user_data["selected_major"])
+            if index >= 0:
+                self.major_dropdown.setCurrentIndex(index)
+        
+        self.update_remove_dropdown()
+        self.update_next_class_info()
+        
+        QMessageBox.information(self, "Success", "Data loaded successfully!")
+    
+    def clear_schedule(self):
+        """Clear all classes from the schedule grid."""
+        to_remove = list(self.schedule_grid.cell_occupancy.keys())
+        for key in to_remove:
+            widget = self.schedule_grid.cell_occupancy.pop(key)
+            self.schedule_grid.grid.removeWidget(widget)
+            widget.deleteLater()
+        
+        self.update_remove_dropdown()
+        self.update_next_class_info()
+    
+    def update_account_display(self):
+        """Update the account section UI based on login status."""
+        if self.account_manager.is_logged_in():
+            username = self.account_manager.get_current_username()
+            self.account_status_label.setText(f"Logged in as: {username}")
+            self.login_btn.setVisible(False)
+            self.logout_btn.setVisible(True)
+            self.load_btn.setVisible(True)
+        else:
+            self.account_status_label.setText("Not logged in")
+            self.login_btn.setVisible(True)
+            self.logout_btn.setVisible(False)
+            self.load_btn.setVisible(False)
 
     # ------------------ MAJOR INFO ------------------
     def build_major_info_section(self):
@@ -137,14 +332,12 @@ class MajorApp(QWidget):
         clubs = major_clubs.get(major, [])
 
         if not clubs:
-            # fallback if no clubs found
             msg = "No clubs found for this major."
         else:
             msg = ""
             for club in clubs:
                 msg += f"{club['name']}\n{club['description']}\n\n"
 
-        # Display in a simple dialog
         dialog = QDialog(self)
         dialog.setWindowTitle(f"{major} Clubs")
         dialog.setMinimumSize(400, 300)
@@ -315,7 +508,10 @@ class MajorApp(QWidget):
     # ------------------ QUIZ ------------------
     def open_quiz_dialog(self):
         dialog = QuizDialog(self)
-        dialog.exec()
+        if dialog.exec():
+            # Store quiz result if available
+            if hasattr(dialog, 'result_data'):
+                self.quiz_result = dialog.result_data
 
     # ------------------ ABOUT ------------------
     def show_about_info(self):
